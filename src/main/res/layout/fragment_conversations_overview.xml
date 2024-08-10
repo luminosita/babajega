@@ -12,12 +12,14 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
 
+<!--        android:backgroundTint="@color/amber_300"-->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
+            android:backgroundTint="@color/amber_300"
             android:text="@string/start_chat"
             app:icon="@drawable/ic_chat_24dp" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

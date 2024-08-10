@@ -8,6 +8,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
+            android:background="#FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -48,7 +49,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/welcome_header"
+                        android:text=""
                         android:textAppearance="?textAppearanceTitleLarge" />
 
                     <TextView
@@ -56,24 +57,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
-                        android:text="@string/do_you_have_an_account"
+                        android:text=""
                         android:textAppearance="?textAppearanceBodyMedium" />
 
-                    <Button
-                        android:id="@+id/register_new_account"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="@string/create_new_account" />
+<!--                    <Button-->
+<!--                        android:id="@+id/register_new_account"-->
+<!--                        style="@style/Widget.Material3.Button.TonalButton"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="end"-->
+<!--                        android:text="@string/create_new_account" />-->
 
                     <Button
                         android:id="@+id/use_existing"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
+                        android:textSize="22sp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="@string/i_already_have_an_account" />
+                        android:text="Login" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -88,7 +90,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
-                        android:src="@drawable/main_logo" />
+                        android:src="@drawable/mainicon" />
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>

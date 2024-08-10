@@ -161,7 +161,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	}
 
 	private void populateView() {
-		setTitle(getString(R.string.trust_omemo_fingerprints));
+		setTitle(getString(R.string.confirm_participants));
 		binding.ownKeysDetails.removeAllViews();
 		binding.foreignKeys.removeAllViews();
 		boolean hasOwnKeys = false;
@@ -195,18 +195,18 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 					);
 				}
 				if (fingerprints.isEmpty()) {
-					keysCardBinding.noKeysToAccept.setVisibility(View.VISIBLE);
+					//keysCardBinding.noKeysToAccept.setVisibility(View.VISIBLE);
 					if (hasNoOtherTrustedKeys(jid)) {
 						if (!mAccount.getRoster().getContact(jid).mutualPresenceSubscription()) {
-							keysCardBinding.noKeysToAccept.setText(R.string.error_no_keys_to_trust_presence);
+						//	keysCardBinding.noKeysToAccept.setText(R.string.error_no_keys_to_trust_presence);
 						} else {
-							keysCardBinding.noKeysToAccept.setText(R.string.error_no_keys_to_trust_server_error);
+						//	keysCardBinding.noKeysToAccept.setText(R.string.error_no_keys_to_trust_server_error);
 						}
 					} else {
-						keysCardBinding.noKeysToAccept.setText(getString(R.string.no_keys_just_confirm, mAccount.getRoster().getContact(jid).getDisplayName()));
+					//	keysCardBinding.noKeysToAccept.setText(getString(R.string.no_keys_just_confirm, mAccount.getRoster().getContact(jid).getDisplayName()));
 					}
 				} else {
-					keysCardBinding.noKeysToAccept.setVisibility(View.GONE);
+				//	keysCardBinding.noKeysToAccept.setVisibility(View.GONE);
 				}
 				binding.foreignKeys.addView(keysCardBinding.foreignKeysCard);
 			}

@@ -732,7 +732,7 @@ public class EditAccountActivity extends OmemoActivity
         this.binding.avater.setOnClickListener(this.mAvatarClickListener);
         this.binding.hostname.addTextChangedListener(mTextWatcher);
         this.binding.hostname.setOnFocusChangeListener(mEditTextFocusListener);
-        this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
+       // this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
         this.binding.port.setText(String.valueOf(Resolver.DEFAULT_PORT_XMPP));
         this.binding.port.addTextChangedListener(mTextWatcher);
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -747,7 +747,7 @@ public class EditAccountActivity extends OmemoActivity
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
         this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
-        this.binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
+    //    this.binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
     }
 
     private void onEditYourNameClicked(View view) {
@@ -774,13 +774,13 @@ public class EditAccountActivity extends OmemoActivity
     public boolean onCreateOptionsMenu(final Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.editaccount, menu);
-        final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
-        final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
+     //   final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
+   //     final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
         final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
         final MenuItem deleteAccount = menu.findItem(R.id.action_delete_account);
         final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
-        final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
-        final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
+ //       final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
+    //    final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
         final MenuItem share = menu.findItem(R.id.action_share);
         renewCertificate.setVisible(mAccount != null && mAccount.getPrivateKeyAlias() != null);
 
@@ -788,32 +788,32 @@ public class EditAccountActivity extends OmemoActivity
 
         if (mAccount != null && mAccount.isOnlineAndConnected()) {
             if (!mAccount.getXmppConnection().getFeatures().blocking()) {
-                showBlocklist.setVisible(false);
+            //    showBlocklist.setVisible(false);
             }
 
             if (!mAccount.getXmppConnection().getFeatures().register()) {
                 changePassword.setVisible(false);
                 deleteAccount.setVisible(false);
             }
-            mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
-            changePresence.setVisible(!mInitMode);
+    //        mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
+         //   changePresence.setVisible(!mInitMode);
         } else {
-            showBlocklist.setVisible(false);
-            showMoreInfo.setVisible(false);
+//            showBlocklist.setVisible(false);
+//            showMoreInfo.setVisible(false);
             changePassword.setVisible(false);
             deleteAccount.setVisible(false);
-            mamPrefs.setVisible(false);
-            changePresence.setVisible(false);
+      //      mamPrefs.setVisible(false);
+            //changePresence.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
-        if (showMoreInfo.isVisible()) {
-            showMoreInfo.setChecked(binding.serverInfoMore.getVisibility() == View.VISIBLE);
-        }
+//        final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
+//        if (showMoreInfo.isVisible()) {
+//            showMoreInfo.setChecked(binding.serverInfoMore.getVisibility() == View.VISIBLE);
+//        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -868,6 +868,7 @@ public class EditAccountActivity extends OmemoActivity
                     }
                 } else {
                     setTitle(R.string.action_add_account);
+                    this.binding.accountRegisterNew.setVisibility(View.GONE);
                 }
             }
         }
@@ -1007,38 +1008,38 @@ public class EditAccountActivity extends OmemoActivity
             case android.R.id.home:
                 deleteAccountAndReturnIfNecessary();
                 break;
-            case R.id.action_show_block_list:
-                final Intent showBlocklistIntent = new Intent(this, BlocklistActivity.class);
-                showBlocklistIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toEscapedString());
-                startActivity(showBlocklistIntent);
-                break;
-            case R.id.action_server_info_show_more:
-                changeMoreTableVisibility(!item.isChecked());
-                break;
-            case R.id.action_share_barcode:
-                shareBarcode();
-                break;
-            case R.id.action_share_http:
-                shareLink(true);
-                break;
-            case R.id.action_share_uri:
-                shareLink(false);
-                break;
+//            case R.id.action_show_block_list:
+//                final Intent showBlocklistIntent = new Intent(this, BlocklistActivity.class);
+//                showBlocklistIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toEscapedString());
+//                startActivity(showBlocklistIntent);
+//                break;
+//            case R.id.action_server_info_show_more:
+//                changeMoreTableVisibility(!item.isChecked());
+//                break;
+//            case R.id.action_share_barcode:
+//                shareBarcode();
+//                break;
+//            case R.id.action_share_http:
+//                shareLink(true);
+//                break;
+//            case R.id.action_share_uri:
+//                shareLink(false);
+//                break;
             case R.id.action_change_password_on_server:
                 gotoChangePassword();
                 break;
             case R.id.action_delete_account:
                 deleteAccount();
                 break;
-            case R.id.action_mam_prefs:
-                editMamPrefs();
-                break;
+//            case R.id.action_mam_prefs:
+//                editMamPrefs();
+//                break;
             case R.id.action_renew_certificate:
                 renewCertificate();
                 break;
-            case R.id.action_change_presence:
-                changePresence();
-                break;
+//            case R.id.action_change_presence:
+//                changePresence();
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -1238,13 +1239,14 @@ public class EditAccountActivity extends OmemoActivity
             }
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         } else if (this.mAccount.isOptionSet(Account.OPTION_REGISTER) && mForceRegister == null) {
-            this.binding.accountRegisterNew.setVisibility(View.VISIBLE);
+            this.binding.accountRegisterNew.setVisibility(View.GONE);
         } else {
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
         if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
             final Features features = this.mAccount.getXmppConnection().getFeatures();
-            this.binding.stats.setVisibility(View.VISIBLE);
+         //   this.binding.stats.setVisibility(View.VISIBLE);
+            this.binding.stats.setVisibility(View.GONE);
             boolean showBatteryWarning = isOptimizingBattery();
             boolean showDataSaverWarning = isAffectedByDataSaver();
             showOsOptimizationWarning(showBatteryWarning, showDataSaverWarning);

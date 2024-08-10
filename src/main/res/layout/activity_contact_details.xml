@@ -49,7 +49,7 @@
                             android:layout_height="@dimen/avatar_on_details_screen_size"
                             android:layout_alignParentTop="true"
                             android:scaleType="centerCrop"
-                            app:riv_corner_radius="8dp" />
+                            app:riv_corner_radius="36dp" />
 
                         <LinearLayout
                             android:id="@+id/details_jidbox"
@@ -107,6 +107,7 @@
                                 style="@style/Widget.Material3.Button.ElevatedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/amber_700"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/add_contact" />
 
@@ -170,6 +171,7 @@
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/amber_700"
                                 android:text="@string/view_media" />
                         </LinearLayout>
                     </LinearLayout>

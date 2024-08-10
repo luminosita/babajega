@@ -1143,65 +1143,66 @@ public class ConversationFragment extends XmppFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.fragment_conversation, menu);
-        final MenuItem menuMucDetails = menu.findItem(R.id.action_muc_details);
-        final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
-        final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
-        final MenuItem menuMute = menu.findItem(R.id.action_mute);
-        final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
-        final MenuItem menuCall = menu.findItem(R.id.action_call);
-        final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
-        final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
-        final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
+//        final MenuItem menuMucDetails = menu.findItem(R.id.action_muc_details);
+//        final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
+//        final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
+//        final MenuItem menuMute = menu.findItem(R.id.action_mute);
+//        final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
+////        final MenuItem menuCall = menu.findItem(R.id.action_call);
+////        final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
+////        final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
+//        final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
 
         if (conversation != null) {
-            if (conversation.getMode() == Conversation.MODE_MULTI) {
-                menuContactDetails.setVisible(false);
-                menuInviteContact.setVisible(conversation.getMucOptions().canInvite());
-                menuMucDetails.setTitle(
-                        conversation.getMucOptions().isPrivateAndNonAnonymous()
-                                ? R.string.action_muc_details
-                                : R.string.channel_details);
-                menuCall.setVisible(false);
-                menuOngoingCall.setVisible(false);
-            } else {
-                final XmppConnectionService service =
-                        activity == null ? null : activity.xmppConnectionService;
-                final Optional<OngoingRtpSession> ongoingRtpSession =
-                        service == null
-                                ? Optional.absent()
-                                : service.getJingleConnectionManager()
-                                        .getOngoingRtpConnection(conversation.getContact());
-                if (ongoingRtpSession.isPresent()) {
-                    menuOngoingCall.setVisible(true);
-                    menuCall.setVisible(false);
-                } else {
-                    menuOngoingCall.setVisible(false);
-                    final RtpCapability.Capability rtpCapability =
-                            RtpCapability.check(conversation.getContact());
-                    final boolean cameraAvailable =
-                            activity != null && activity.isCameraFeatureAvailable();
-                    menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
-                    menuVideoCall.setVisible(
-                            rtpCapability == RtpCapability.Capability.VIDEO && cameraAvailable);
-                }
-                menuContactDetails.setVisible(!this.conversation.withSelf());
-                menuMucDetails.setVisible(false);
-                menuInviteContact.setVisible(
-                        service != null
-                                && service.findConferenceServer(conversation.getAccount()) != null);
-            }
-            if (conversation.isMuted()) {
-                menuMute.setVisible(false);
-            } else {
-                menuUnmute.setVisible(false);
-            }
+//            if (conversation.getMode() == Conversation.MODE_MULTI) {
+//                menuContactDetails.setVisible(false);
+//                menuInviteContact.setVisible(conversation.getMucOptions().canInvite());
+//                menuMucDetails.setTitle(
+//                        conversation.getMucOptions().isPrivateAndNonAnonymous()
+//                                ? R.string.action_muc_details
+//                                : R.string.channel_details);
+//                menuCall.setVisible(false);
+//                menuOngoingCall.setVisible(false);
+//            }
+//            else {
+//                final XmppConnectionService service =
+//                        activity == null ? null : activity.xmppConnectionService;
+//                final Optional<OngoingRtpSession> ongoingRtpSession =
+//                        service == null
+//                                ? Optional.absent()
+//                                : service.getJingleConnectionManager()
+//                                        .getOngoingRtpConnection(conversation.getContact());
+//                if (ongoingRtpSession.isPresent()) {
+//                    menuOngoingCall.setVisible(true);
+//                    menuCall.setVisible(false);
+//                } else {
+//                    menuOngoingCall.setVisible(false);
+//                    final RtpCapability.Capability rtpCapability =
+//                            RtpCapability.check(conversation.getContact());
+//                    final boolean cameraAvailable =
+//                            activity != null && activity.isCameraFeatureAvailable();
+//                    menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
+//                    menuVideoCall.setVisible(
+//                            rtpCapability == RtpCapability.Capability.VIDEO && cameraAvailable);
+//                }
+//                menuContactDetails.setVisible(!this.conversation.withSelf());
+//                menuMucDetails.setVisible(false);
+//                menuInviteContact.setVisible(
+//                        service != null
+//                                && service.findConferenceServer(conversation.getAccount()) != null);
+//            }
+//            if (conversation.isMuted()) {
+//                menuMute.setVisible(false);
+//            } else {
+//                menuUnmute.setVisible(false);
+//            }
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu);
-            ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
-            if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
-                menuTogglePinned.setTitle(R.string.remove_from_favorites);
-            } else {
-                menuTogglePinned.setTitle(R.string.add_to_favorites);
-            }
+         //   ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
+//            if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
+//                menuTogglePinned.setTitle(R.string.remove_from_favorites);
+//            } else {
+//                menuTogglePinned.setTitle(R.string.add_to_favorites);
+//            }
         }
         super.onCreateOptionsMenu(menu, menuInflater);
     }
@@ -1479,45 +1480,45 @@ public class ConversationFragment extends XmppFragment
             return super.onOptionsItemSelected(item);
         }
         switch (item.getItemId()) {
-            case R.id.encryption_choice_axolotl:
-            case R.id.encryption_choice_pgp:
-            case R.id.encryption_choice_none:
-                handleEncryptionSelection(item);
-                break;
+//            case R.id.encryption_choice_axolotl:
+//            case R.id.encryption_choice_pgp:
+//            case R.id.encryption_choice_none:
+//                handleEncryptionSelection(item);
+//                break;
             case R.id.attach_choose_picture:
             case R.id.attach_take_picture:
             case R.id.attach_record_video:
             case R.id.attach_choose_file:
             case R.id.attach_record_voice:
-            case R.id.attach_location:
-                handleAttachmentSelection(item);
-                break;
+//            case R.id.attach_location:
+//                handleAttachmentSelection(item);
+//                break;
             case R.id.action_search:
                 startSearch();
                 break;
-            case R.id.action_archive:
-                activity.xmppConnectionService.archiveConversation(conversation);
-                break;
+//            case R.id.action_archive:
+//                activity.xmppConnectionService.archiveConversation(conversation);
+//                break;
             case R.id.action_contact_details:
                 activity.switchToContactDetails(conversation.getContact());
                 break;
-            case R.id.action_muc_details:
-                ConferenceDetailsActivity.open(getActivity(), conversation);
-                break;
-            case R.id.action_invite:
-                startActivityForResult(
-                        ChooseContactActivity.create(activity, conversation),
-                        REQUEST_INVITE_TO_CONVERSATION);
-                break;
-            case R.id.action_clear_history:
-                clearHistoryDialog(conversation);
-                break;
-            case R.id.action_mute:
-                muteConversationDialog(conversation);
-                break;
-            case R.id.action_unmute:
-                unMuteConversation(conversation);
-                break;
+//            case R.id.action_muc_details:
+//                ConferenceDetailsActivity.open(getActivity(), conversation);
+//                break;
+//            case R.id.action_invite:
+//                startActivityForResult(
+//                        ChooseContactActivity.create(activity, conversation),
+//                        REQUEST_INVITE_TO_CONVERSATION);
+//                break;
+//            case R.id.action_clear_history:
+//                clearHistoryDialog(conversation);
+//                break;
+//            case R.id.action_mute:
+//                muteConversationDialog(conversation);
+//                break;
+//            case R.id.action_unmute:
+//                unMuteConversation(conversation);
+//                break;
             case R.id.action_block:
             case R.id.action_unblock:
                 final Activity activity = getActivity();
@@ -1525,18 +1526,18 @@ public class ConversationFragment extends XmppFragment
                     BlockContactDialog.show((XmppActivity) activity, conversation);
                 }
                 break;
-            case R.id.action_audio_call:
-                checkPermissionAndTriggerAudioCall();
-                break;
-            case R.id.action_video_call:
-                checkPermissionAndTriggerVideoCall();
-                break;
-            case R.id.action_ongoing_call:
-                returnToOngoingCall();
-                break;
-            case R.id.action_toggle_pinned:
-                togglePinned();
-                break;
+//            case R.id.action_audio_call:
+//                checkPermissionAndTriggerAudioCall();
+//                break;
+//            case R.id.action_video_call:
+//                checkPermissionAndTriggerVideoCall();
+//                break;
+//            case R.id.action_ongoing_call:
+//                returnToOngoingCall();
+//                break;
+//            case R.id.action_toggle_pinned:
+//                togglePinned();
+//                break;
             default:
                 break;
         }
@@ -1680,9 +1681,9 @@ public class ConversationFragment extends XmppFragment
             case R.id.attach_record_voice:
                 attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
                 break;
-            case R.id.attach_location:
-                attachFile(ATTACHMENT_CHOICE_LOCATION);
-                break;
+//            case R.id.attach_location:
+//                attachFile(ATTACHMENT_CHOICE_LOCATION);
+//                break;
         }
     }
 
@@ -1692,37 +1693,37 @@ public class ConversationFragment extends XmppFragment
         }
         final boolean updated;
         switch (item.getItemId()) {
-            case R.id.encryption_choice_none:
-                updated = conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-                item.setChecked(true);
-                break;
-            case R.id.encryption_choice_pgp:
-                if (activity.hasPgp()) {
-                    if (conversation.getAccount().getPgpSignature() != null) {
-                        updated = conversation.setNextEncryption(Message.ENCRYPTION_PGP);
-                        item.setChecked(true);
-                    } else {
-                        updated = false;
-                        activity.announcePgp(
-                                conversation.getAccount(),
-                                conversation,
-                                null,
-                                activity.onOpenPGPKeyPublished);
-                    }
-                } else {
-                    activity.showInstallPgpDialog();
-                    updated = false;
-                }
-                break;
-            case R.id.encryption_choice_axolotl:
-                Log.d(
-                        Config.LOGTAG,
-                        AxolotlService.getLogprefix(conversation.getAccount())
-                                + "Enabled axolotl for Contact "
-                                + conversation.getContact().getJid());
-                updated = conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
-                item.setChecked(true);
-                break;
+//            case R.id.encryption_choice_none:
+//                updated = conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+//                item.setChecked(true);
+//                break;
+//            case R.id.encryption_choice_pgp:
+//                if (activity.hasPgp()) {
+//                    if (conversation.getAccount().getPgpSignature() != null) {
+//                        updated = conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+//                        item.setChecked(true);
+//                    } else {
+//                        updated = false;
+//                        activity.announcePgp(
+//                                conversation.getAccount(),
+//                                conversation,
+//                                null,
+//                                activity.onOpenPGPKeyPublished);
+//                    }
+//                } else {
+//                    activity.showInstallPgpDialog();
+//                    updated = false;
+//                }
+//                break;
+//            case R.id.encryption_choice_axolotl:
+//                Log.d(
+//                        Config.LOGTAG,
+//                        AxolotlService.getLogprefix(conversation.getAccount())
+//                                + "Enabled axolotl for Contact "
+//                                + conversation.getContact().getJid());
+//                updated = conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
+//                item.setChecked(true);
+//                break;
             default:
                 updated = conversation.setNextEncryption(Message.ENCRYPTION_NONE);
                 break;
@@ -2923,7 +2924,7 @@ public class ConversationFragment extends XmppFragment
         this.binding.textSendButton.setTag(action);
         this.binding.textSendButton.setIconResource(SendButtonTool.getSendButtonImageResource(action));
         this.binding.textSendButton.setIconTint(ColorStateList.valueOf(SendButtonTool.getSendButtonColor(this.binding.textSendButton, status)));
-        // TODO send button color
+        // TODO send button colo
         final Activity activity = getActivity();
         if (activity != null) {
         }

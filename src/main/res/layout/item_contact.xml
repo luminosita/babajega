@@ -13,9 +13,10 @@
             android:id="@+id/contact_photo"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:src="@color/amber_700"
             android:layout_alignParentStart="true"
             android:scaleType="centerCrop"
-            app:riv_corner_radius="6dp" />
+            app:riv_corner_radius="24dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"

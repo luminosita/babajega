@@ -466,12 +466,15 @@ public class UIHelper {
             case Message.ENCRYPTION_AXOLOTL -> {
                 final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
                 if (axolotlService != null && axolotlService.trustedSessionVerified(conversation)) {
-                    yield context.getString(R.string.send_omemo_x509_message);
+                 //   yield context.getString(R.string.send_omemo_x509_message);
+                    yield "Type your message";
                 } else {
-                    yield context.getString(R.string.send_encrypted_message);
+                   // yield context.getString(R.string.send_encrypted_message);
+                    yield "Type your message";
                 }
             }
-            default -> context.getString(R.string.send_encrypted_message);
+            //default -> context.getString(R.string.send_encrypted_message);
+            default -> "Type your message";
         };
     }
 

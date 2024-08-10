@@ -245,12 +245,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.action_share_http:
-                shareLink(true);
-                break;
-            case R.id.action_share_uri:
-                shareLink(false);
-                break;
+//            case R.id.action_share_http:
+//                shareLink(true);
+//                break;
+//            case R.id.action_share_uri:
+//                shareLink(false);
+//                break;
             case R.id.action_save_as_bookmark:
                 saveAsBookmark();
                 break;

@@ -279,12 +279,12 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.action_share_http:
-                shareLink(true);
-                break;
-            case R.id.action_share_uri:
-                shareLink(false);
-                break;
+//            case R.id.action_share_http:
+//                shareLink(true);
+//                break;
+//            case R.id.action_share_uri:
+//                shareLink(false);
+//                break;
             case R.id.action_delete_contact:
                 final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setNegativeButton(getString(R.string.cancel), null);

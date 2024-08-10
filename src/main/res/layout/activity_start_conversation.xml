@@ -52,9 +52,9 @@
             android:layout_alignParentBottom="true"
             android:contentDescription="@string/add_contact_or_create_or_join_group_chat"
             app:sdMainFabClosedSrc="@drawable/ic_add_24dp"
-            app:sdMainFabClosedBackgroundColor="?colorPrimaryContainer"
+            app:sdMainFabClosedBackgroundColor="@color/amber_200"
             app:sdMainFabClosedIconColor="?colorOnPrimaryContainer"
-            app:sdMainFabOpenedBackgroundColor="?colorPrimaryContainer"
+            app:sdMainFabOpenedBackgroundColor="@color/amber_200"
             app:sdMainFabOpenedIconColor="?colorOnPrimaryContainer"
             app:sdOverlayLayout="@id/overlay"
             app:sdUseReverseAnimationOnClose="true" />

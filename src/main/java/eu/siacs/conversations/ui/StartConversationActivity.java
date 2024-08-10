@@ -61,6 +61,11 @@ import com.google.common.collect.Iterables;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -88,19 +93,14 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class StartConversationActivity extends XmppActivity
         implements XmppConnectionService.OnConversationUpdate,
-                OnRosterUpdate,
-                OnUpdateBlocklist,
-                CreatePrivateGroupChatDialog.CreateConferenceDialogListener,
-                JoinConferenceDialog.JoinConferenceDialogListener,
-                SwipeRefreshLayout.OnRefreshListener,
-                CreatePublicChannelDialog.CreatePublicChannelDialogListener {
+        OnRosterUpdate,
+        OnUpdateBlocklist,
+        CreatePrivateGroupChatDialog.CreateConferenceDialogListener,
+        JoinConferenceDialog.JoinConferenceDialogListener,
+        SwipeRefreshLayout.OnRefreshListener,
+        CreatePublicChannelDialog.CreatePublicChannelDialogListener {
 
     private static final String PREF_KEY_CONTACT_INTEGRATION_CONSENT =
             "contact_list_integration_consent";
@@ -168,10 +168,12 @@ public class StartConversationActivity extends XmppActivity
                 }
 
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
             };
     private MenuItem mMenuSearchView;
     private final ListItemAdapter.OnTagClickedListener mOnTagClickedListener =
@@ -205,7 +207,8 @@ public class StartConversationActivity extends XmppActivity
                 }
 
                 @Override
-                public void userInputRequired(PendingIntent pi, Conversation object) {}
+                public void userInputRequired(PendingIntent pi, Conversation object) {
+                }
             };
     private ActivityStartConversationBinding binding;
     private final TextView.OnEditorActionListener mSearchDone =
@@ -274,8 +277,8 @@ public class StartConversationActivity extends XmppActivity
     private static boolean isViewIntent(final Intent i) {
         return i != null
                 && (Intent.ACTION_VIEW.equals(i.getAction())
-                        || Intent.ACTION_SENDTO.equals(i.getAction())
-                        || i.hasExtra(EXTRA_INVITE_URI));
+                || Intent.ACTION_SENDTO.equals(i.getAction())
+                || i.hasExtra(EXTRA_INVITE_URI));
     }
 
     protected void hideToast() {
@@ -364,26 +367,28 @@ public class StartConversationActivity extends XmppActivity
                         prefilled = null;
                     }
                     switch (actionItem.getId()) {
-                        case R.id.discover_public_channels:
-                            if (QuickConversationsService.isPlayStoreFlavor()) {
-                                throw new IllegalStateException(
-                                        "Channel discovery is not available on Google Play flavor");
-                            } else {
-                                startActivity(new Intent(this, ChannelDiscoveryActivity.class));
-                            }
-                            break;
-                        case R.id.join_public_channel:
-                            showJoinConferenceDialog(prefilled);
+                        case R.id.create_contact:
+                            showCreateContactDialog(prefilled, null);
                             break;
                         case R.id.create_private_group_chat:
                             showCreatePrivateGroupChatDialog();
                             break;
-                        case R.id.create_public_channel:
-                            showPublicChannelDialog();
-                            break;
-                        case R.id.create_contact:
-                            showCreateContactDialog(prefilled, null);
-                            break;
+//                        case R.id.discover_public_channels:
+//                            if (QuickConversationsService.isPlayStoreFlavor()) {
+//                                throw new IllegalStateException(
+//                                        "Channel discovery is not available on Google Play flavor");
+//                            } else {
+//                                startActivity(new Intent(this, ChannelDiscoveryActivity.class));
+//                            }
+//                            break;
+//                        case R.id.join_public_channel:
+//                            showJoinConferenceDialog(prefilled);
+//                            break;
+
+//                        case R.id.create_public_channel:
+//                            showPublicChannelDialog();
+//                            break;
+
                     }
                     return false;
                 });
@@ -396,10 +401,10 @@ public class StartConversationActivity extends XmppActivity
         final Menu menu = popupMenu.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             final MenuItem menuItem = menu.getItem(i);
-            if (QuickConversationsService.isPlayStoreFlavor()
-                    && menuItem.getItemId() == R.id.discover_public_channels) {
-                continue;
-            }
+//            if (QuickConversationsService.isPlayStoreFlavor()
+//                    && menuItem.getItemId() == R.id.discover_public_channels) {
+//                continue;
+//            }
             final SpeedDialActionItem actionItem =
                     new SpeedDialActionItem.Builder(menuItem.getItemId(), menuItem.getIcon())
                             .setLabel(
@@ -463,9 +468,9 @@ public class StartConversationActivity extends XmppActivity
     private void requestNotificationPermissionIfNeeded() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                        != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(
-                    new String[] {Manifest.permission.POST_NOTIFICATIONS},
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
                     REQUEST_POST_NOTIFICATION);
         }
     }
@@ -888,7 +893,7 @@ public class StartConversationActivity extends XmppActivity
                             .getString(PREF_KEY_CONTACT_INTEGRATION_CONSENT, null);
             final boolean requiresConsent =
                     (QuickConversationsService.isQuicksy()
-                                    || QuickConversationsService.isPlayStoreFlavor())
+                            || QuickConversationsService.isPlayStoreFlavor())
                             && !"agreed".equals(consent);
             if (requiresConsent && "declined".equals(consent)) {
                 Log.d(
@@ -1000,8 +1005,8 @@ public class StartConversationActivity extends XmppActivity
     protected void onBackendConnected() {
         if (QuickConversationsService.isContactListIntegration(this)
                 && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-                        || checkSelfPermission(Manifest.permission.READ_CONTACTS)
-                                == PackageManager.PERMISSION_GRANTED)) {
+                || checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED)) {
             xmppConnectionService.getQuickConversationsService().considerSyncBackground(false);
         }
         if (mPostponedActivityResult != null) {
@@ -1161,8 +1166,8 @@ public class StartConversationActivity extends XmppActivity
                     if (contact.showInContactList()
                             && contact.match(this, needle)
                             && (!this.mHideOfflineContacts
-                                    || (needle != null && !needle.trim().isEmpty())
-                                    || s.compareTo(Presence.Status.OFFLINE) < 0)) {
+                            || (needle != null && !needle.trim().isEmpty())
+                            || s.compareTo(Presence.Status.OFFLINE) < 0)) {
                         this.contacts.add(contact);
                     }
                 }
@@ -1205,6 +1210,7 @@ public class StartConversationActivity extends XmppActivity
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         if (binding.speedDial.isOpen()) {
             binding.speedDial.close();
             return;
@@ -1340,7 +1346,8 @@ public class StartConversationActivity extends XmppActivity
                     }
 
                     @Override
-                    public void userInputRequired(PendingIntent pi, Conversation object) {}
+                    public void userInputRequired(PendingIntent pi, Conversation object) {
+                    }
                 });
     }
 

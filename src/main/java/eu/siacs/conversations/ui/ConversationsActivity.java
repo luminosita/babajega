@@ -640,10 +640,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             if (conversation != null) {
                 actionBar.setTitle(conversation.getName());
             } else {
-                actionBar.setTitle(R.string.app_name);
+               // actionBar.setTitle(R.string.app_name);
+                actionBar.setTitle("Chats");
             }
         } else {
-            actionBar.setTitle(R.string.app_name);
+//           actionBar.setTitle(R.string.app_name);
+           actionBar.setTitle("Chats");
         }
         actionBar.setDisplayHomeAsUpEnabled(false);
         ToolbarUtils.resetActionBarOnClickListeners(binding.toolbar);

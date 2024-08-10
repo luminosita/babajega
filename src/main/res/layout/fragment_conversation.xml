@@ -54,6 +54,8 @@
             android:paddingHorizontal="8dp"
             android:paddingVertical="6dp">
 
+<!--            android:backgroundTint="?colorTertiaryContainer"-->
+
             <LinearLayout
                 android:id="@+id/input_layout"
                 android:layout_width="wrap_content"
@@ -62,7 +64,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/textSendButton"
                 android:background="@drawable/background_message_bubble"
-                android:backgroundTint="?colorTertiaryContainer"
+                android:backgroundTint="@color/amber_300"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp">
@@ -109,7 +111,7 @@
                 </eu.siacs.conversations.ui.widget.EditMessage>
 
             </LinearLayout>
-
+<!--            android:backgroundTint="?colorSurfaceContainerHigh"-->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/textSendButton"
                 style="?attr/materialIconButtonFilledTonalStyle"
@@ -118,9 +120,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:backgroundTint="?colorSurfaceContainerHigh"
+                android:backgroundTint="@color/amber_200"
                 android:contentDescription="@string/send_message"
-                app:icon="@drawable/ic_send_24dp"
+                app:icon="@drawable/message_icon"
+                app:iconTint="@color/dark_green"
                 app:iconSize="32dp" />
         </RelativeLayout>
 

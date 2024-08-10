@@ -121,12 +121,12 @@ public class WelcomeActivity extends XmppActivity
         setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar(), false);
         setTitle(null);
-        binding.registerNewAccount.setOnClickListener(
-                v -> {
-                    final Intent intent = new Intent(this, PickServerActivity.class);
-                    addInviteUri(intent);
-                    startActivity(intent);
-                });
+//        binding.registerNewAccount.setOnClickListener(
+//                v -> {
+//                    final Intent intent = new Intent(this, PickServerActivity.class);
+//                    addInviteUri(intent);
+//                    startActivity(intent);
+//                });
         binding.useExisting.setOnClickListener(
                 v -> {
                     final List<Account> accounts = xmppConnectionService.getAccounts();
@@ -154,17 +154,17 @@ public class WelcomeActivity extends XmppActivity
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_import_backup:
-                if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
-                    startActivity(new Intent(this, ImportBackupActivity.class));
-                }
-                break;
+//            case R.id.action_import_backup:
+//                if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
+//                    startActivity(new Intent(this, ImportBackupActivity.class));
+//                }
+//                break;
             case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this, true);
                 break;
-            case R.id.action_add_account_with_cert:
-                addAccountFromKey();
-                break;
+//            case R.id.action_add_account_with_cert:
+//                addAccountFromKey();
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -54,7 +54,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginEnd="@dimen/avatar_item_distance"
                             android:contentDescription="@string/account_image_description"
-                            app:riv_corner_radius="8dp" />
+                            app:riv_corner_radius="36dp" />
 
                         <LinearLayout
                             android:layout_width="fill_parent"
@@ -67,7 +67,7 @@
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/account_settings_jabber_id">
+                                android:hint="User ID">
 
                                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                                     android:id="@+id/account_jid"
@@ -683,89 +683,88 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/other_device_keys_card"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+<!--                <com.google.android.material.card.MaterialCardView-->
+<!--                    android:id="@+id/other_device_keys_card"-->
+<!--                    android:layout_width="fill_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginTop="@dimen/activity_vertical_margin"-->
+<!--                    android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginBottom="@dimen/activity_vertical_margin"-->
+<!--                    android:visibility="gone">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical">-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="@dimen/card_padding_list">
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="@dimen/card_padding_list">-->
 
-                            <TextView
-                                android:id="@+id/other_device_keys_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/list_padding"
-                                android:text="@string/other_devices"
-                                android:textAppearance="?textAppearanceTitleLarge" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/other_device_keys_title"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_margin="@dimen/list_padding"-->
+<!--                                android:text="@string/other_devices"-->
+<!--                                android:textAppearance="?textAppearanceTitleLarge" />-->
 
-                            <LinearLayout
-                                android:id="@+id/other_device_keys"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical" />
-                        </LinearLayout>
+<!--                            <LinearLayout-->
+<!--                                android:id="@+id/other_device_keys"-->
+<!--                                android:layout_width="fill_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="vertical" />-->
+<!--                        </LinearLayout>-->
 
-                        <LinearLayout
-                            android:id="@+id/unverified_warning"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="@dimen/card_padding_list">
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/unverified_warning"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:paddingHorizontal="@dimen/card_padding_list">-->
 
-                            <!-- Consider using a warning color here. if we do this then contact details activity has the same warning -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/list_padding"
-                                android:text="@string/unverified_devices"
-                                android:textAppearance="?textAppearanceBodyMedium"
-                                android:textColor="?colorOnSurfaceVariant" />
-                        </LinearLayout>
+<!--                            &lt;!&ndash; Consider using a warning color here. if we do this then contact details activity has the same warning &ndash;&gt;-->
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginHorizontal="@dimen/list_padding"-->
+<!--                                android:text="@string/unverified_devices"-->
+<!--                                android:textAppearance="?textAppearanceBodyMedium"-->
+<!--                                android:textColor="?colorOnSurfaceVariant" />-->
+<!--                        </LinearLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_marginTop="8dp"-->
+<!--                            android:orientation="horizontal">-->
 
 
-                            <Button
-                                android:id="@+id/scan_button"
-                                style="@style/Widget.Material3.Button.TextButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
-                                android:text="@string/scan_qr_code" />
+<!--                            <Button-->
+<!--                                android:id="@+id/scan_button"-->
+<!--                                style="@style/Widget.Material3.Button.TextButton"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:minWidth="0dp"-->
+<!--                                android:paddingLeft="16dp"-->
+<!--                                android:paddingRight="16dp"-->
+<!--                                android:text="@string/scan_qr_code" />-->
 
-                            <Button
-                                android:id="@+id/clear_devices"
-                                style="@style/Widget.Material3.Button.TextButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="0dp"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp"
-                                android:text="@string/clear_other_devices" />
-                        </LinearLayout>
-                    </LinearLayout>
+<!--                            <Button-->
+<!--                                android:id="@+id/clear_devices"-->
+<!--                                style="@style/Widget.Material3.Button.TextButton"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:minWidth="0dp"-->
+<!--                                android:paddingLeft="16dp"-->
+<!--                                android:paddingRight="16dp"-->
+<!--                                android:text="@string/clear_other_devices" />-->
+<!--                        </LinearLayout>-->
+<!--                    </LinearLayout>-->
 
-                </com.google.android.material.card.MaterialCardView>
+<!--                </com.google.android.material.card.MaterialCardView>-->
             </LinearLayout>
         </ScrollView>
 

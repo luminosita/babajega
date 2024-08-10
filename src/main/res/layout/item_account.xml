@@ -17,7 +17,7 @@
             android:layout_height="48dp"
             android:layout_alignParentStart="true"
             android:contentDescription="@string/account_image_description"
-            app:riv_corner_radius="6dp" />
+            app:riv_corner_radius="24dp" />
 
         <LinearLayout
             android:layout_width="fill_parent"

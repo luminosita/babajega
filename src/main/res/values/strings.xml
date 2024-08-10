@@ -1067,6 +1067,8 @@
     <string name="pref_fullscreen_notification_summary">Allow this app to show incoming call notifications that take up the full screen when the device is locked.</string>
     <string name="unsupported_operation">Unsupported operation</string>
     <string name="allow_private_messages">Allow private messages</string>
+    <string name="user_id">User ID</string>
+    <string name="confirm_participants">Confirm Participants</string>
     <string name="edit_nick">Edit nick</string>
     <string name="delete_pgp_key">Delete OpenPGP key</string>
     <string name="edit_name_and_topic">Edit name and topic</string>

@@ -105,9 +105,9 @@ android {
         versionCode 42116
         versionName "2.16.5"
         archivesBaseName += "-$versionName"
-        applicationId "eu.siacs.conversations"
+        applicationId "eu.siacs.babajega"
         resValue "string", "applicationId", applicationId
-        def appName = "Conversations"
+        def appName = "Babajega"
         resValue "string", "app_name", appName
         buildConfigField "String", "APP_NAME", "\"$appName\""
     }

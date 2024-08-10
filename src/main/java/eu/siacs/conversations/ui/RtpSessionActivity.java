@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.R.string.app_name;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 
 import static java.util.Arrays.asList;
@@ -596,7 +597,7 @@ public class RtpSessionActivity extends XmppActivity
             } else {
                 throw new IllegalStateException("Invalid permission result request");
             }
-            Toast.makeText(this, getString(res, getString(R.string.app_name)), Toast.LENGTH_SHORT)
+            Toast.makeText(this, getString(res, getString(app_name)), Toast.LENGTH_SHORT)
                     .show();
         }
     }
