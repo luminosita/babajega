@@ -1,4 +1,4 @@
-/*
+	/*
  * Copyright (c) 2018, Daniel Gultsch All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,7 +29,6 @@
 
 package eu.siacs.conversations.ui;
 
-
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 
 import android.Manifest;
@@ -41,30 +40,47 @@ import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Ikev2VpnProfile;
+import android.net.PlatformVpnProfile;
 import android.net.Uri;
+import android.net.VpnManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.ValueCallback;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
@@ -88,6 +104,7 @@ import eu.siacs.conversations.ui.util.ToolbarUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.vpn.eccikev2vpn;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
@@ -109,6 +126,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             Intent.ACTION_SEND,
             Intent.ACTION_SEND_MULTIPLE
     );
+    private static final int VPN_CON = 443;
+    private final static int FCR = 11341;
+    private static int VPN_CONNECTED = 0;
+    String androidID = null;
+    public static ConversationsActivity instance;
+    public Context context;
+    ConversationsActivity mActivity;
+    private static final String TAG = ConversationsActivity.class.getSimpleName();
+    Intent vpnmng;
+    private String mCM;
+    private ValueCallback mUM;
+    private ValueCallback<Uri[]> mUMA;
 
     public static final int REQUEST_OPEN_MESSAGE = 0x9876;
     public static final int REQUEST_PLAY_PAUSE = 0x5432;
@@ -310,6 +339,43 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         } else {
             this.postponedActivityResult.push(activityResult);
         }
+        if (Build.VERSION.SDK_INT >= 21) {
+            Uri[] results = null;
+            //Check if response is positive
+
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == VPN_CON) {
+                    VPN_CONNECTED = 1;
+                    return;
+                }
+                if (requestCode == FCR) {
+                    if (null == mUMA) {
+                        return;
+                    }
+                    if (data == null || data.getData() == null) {
+                        //Capture Photo if no image available
+                        if (mCM != null) {
+                            results = new Uri[]{Uri.parse(mCM)};
+                        }
+                    } else {
+                        String dataString = data.getDataString();
+                        if (dataString != null) {
+                            results = new Uri[]{Uri.parse(dataString)};
+                        }
+                    }
+                }
+            }
+            mUMA.onReceiveValue(results);
+            mUMA = null;
+
+        } else {
+            if (requestCode == FCR) {
+                if (null == mUM) return;
+                Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
+                mUM.onReceiveValue(result);
+                mUM = null;
+            }
+        }
     }
 
     private void handleActivityResult(final ActivityResult activityResult) {
@@ -388,6 +454,329 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             pendingViewIntent.push(intent);
             setIntent(createLauncherIntent(this));
         }
+        androidID = Settings.System.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        //******************VPN*****************//
+        instance = this;
+        context = this;
+        mActivity = ConversationsActivity.this;
+        // Show the PIN dialog on startup
+       showPinDialog();
+       Boolean vpn_connected = vpn(); //provera da li je vpn već zakačen
+      if (vpn_connected == false) {
+           konektuj(context, vpn_connected);
+      }
+      Log.i(TAG, "konektovanje./././././././././");
+//        vpnManager = new OpenVPNManager(this);
+//        vpnManager.startVPN();
+    }
+
+    //******************************TRAZENJE VALIDNE IP ADRESE*******************//
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String isURLReachableA(String domain) {
+        Runtime runtime = Runtime.getRuntime();
+        String inputLine = "";
+        String konekcija = "";
+        String port = "17441";
+        String port2 = "45781";
+        String port3 = "26884";
+        String komanda = "/system/bin/nc " + domain + " " + port;
+        String komanda2 = "/system/bin/nc " + domain + " " + port2;
+        String komanda3 = "/system/bin/nc " + domain + " " + port3;
+        String komanda4 = "/system/bin/ping -c 2 " + domain;
+        try {
+            Process ipProcess = runtime.exec(komanda);
+            SystemClock.sleep(10);
+            Process ipProcess2 = runtime.exec(komanda2);
+            SystemClock.sleep(10);
+            Process ipProcess3 = runtime.exec(komanda3);
+            SystemClock.sleep(10);
+            Process ipProcess4 = runtime.exec(komanda4);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess4.getInputStream()));
+            inputLine = bufferedReader.readLine();
+            int exitValue = ipProcess4.waitFor();
+            //return (exitValue == 0);
+            if (exitValue == 0) {
+                konekcija = inputLine;
+                if (!ipProcess.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess.destroy();
+                }
+                if (!ipProcess2.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess2.destroy();
+                }
+                if (!ipProcess3.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess3.destroy();
+                }
+            } else {
+                if (!ipProcess.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess.destroy();
+                }
+                if (!ipProcess2.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess2.destroy();
+                }
+                if (!ipProcess3.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess3.destroy();
+                }
+                konekcija = "false";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return konekcija;
+    }
+
+    public String isURLReachableB(String domain) {
+        Runtime runtime = Runtime.getRuntime();
+        String inputLine = "";
+        String konekcija = "";
+        String port = "34881";
+        String port2 = "64771";
+        String port3 = "21336";
+        String komanda = "/system/bin/nc " + domain + " " + port;
+        String komanda2 = "/system/bin/nc " + domain + " " + port2;
+        String komanda3 = "/system/bin/nc " + domain + " " + port3;
+        String komanda4 = "/system/bin/ping -c 2 " + domain;
+        try {
+            Process ipProcess = runtime.exec(komanda);
+            SystemClock.sleep(10);
+            Process ipProcess2 = runtime.exec(komanda2);
+            SystemClock.sleep(10);
+            Process ipProcess3 = runtime.exec(komanda3);
+            SystemClock.sleep(10);
+            Process ipProcess4 = runtime.exec(komanda4);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess4.getInputStream()));
+            inputLine = bufferedReader.readLine();
+            int exitValue = ipProcess4.waitFor();
+            //return (exitValue == 0);
+            if (exitValue == 0) {
+                konekcija = inputLine;
+                if (!ipProcess.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess.destroy();
+                }
+                if (!ipProcess2.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess2.destroy();
+                }
+                if (!ipProcess3.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess3.destroy();
+                }
+            } else {
+                if (!ipProcess.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess.destroy();
+                }
+                if (!ipProcess2.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess2.destroy();
+                }
+                if (!ipProcess3.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess3.destroy();
+                }
+                konekcija = "false";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return konekcija;
+    }
+
+    public String isURLReachableD(String domain) {
+        Runtime runtime = Runtime.getRuntime();
+        String inputLine = "";
+        String konekcija = "";
+        String port = "64771";
+        String port2 = "49331";
+        String port3 = "50608";
+        String komanda = "/system/bin/nc " + domain + " " + port;
+        String komanda2 = "/system/bin/nc " + domain + " " + port2;
+        String komanda3 = "/system/bin/nc " + domain + " " + port3;
+        String komanda4 = "/system/bin/ping -c 2 " + domain;
+        try {
+            Process ipProcess = runtime.exec(komanda);
+            SystemClock.sleep(10);
+            Process ipProcess2 = runtime.exec(komanda2);
+            SystemClock.sleep(10);
+            Process ipProcess3 = runtime.exec(komanda3);
+            SystemClock.sleep(10);
+            Process ipProcess4 = runtime.exec(komanda4);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess4.getInputStream()));
+            inputLine = bufferedReader.readLine();
+            int exitValue = ipProcess4.waitFor();
+            //return (exitValue == 0);
+            if (exitValue == 0) {
+                konekcija = inputLine;
+                if (!ipProcess.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess.destroy();
+                }
+                if (!ipProcess2.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess2.destroy();
+                }
+                if (!ipProcess3.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess3.destroy();
+                }
+            } else {
+                if (!ipProcess.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess.destroy();
+                }
+                if (!ipProcess2.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess2.destroy();
+                }
+                if (!ipProcess3.waitFor(100, TimeUnit.MILLISECONDS)) {
+                    ipProcess3.destroy();
+                }
+                konekcija = "false";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return konekcija;
+    }
+
+    public String parsiraj_adresu(String response) {
+        String ipAdresa = "";
+        ipAdresa = response.substring(response.indexOf("(") + 1, response.indexOf(")"));
+        return ipAdresa;
+    }
+
+    public String parsiraj_ip_adresu() {
+        String lokacija_a = "f0260e90cf00.sn.mynetname.net";
+        String lokacija_b = "f0260eb05672.sn.mynetname.net";
+        // String lokacija_c = "e14e0d3905c9.sn.mynetname.net";
+        String lokacija_d = "f0260e756836.sn.mynetname.net";
+        String ip_adresa = "";
+
+        String mreza = isURLReachableA(lokacija_a);
+        if (mreza == "false") {
+            mreza = isURLReachableB(lokacija_b);
+            if (mreza == "false") {
+                mreza = isURLReachableD(lokacija_d);
+                if (mreza == "false") {
+                    ip_adresa = "109.198.0.4";
+                } else {
+                    ip_adresa = parsiraj_adresu(mreza);
+                }
+            } else {
+                ip_adresa = parsiraj_adresu(mreza);
+            }
+        } else {
+            ip_adresa = parsiraj_adresu(mreza);
+        }
+        return ip_adresa;
+    }
+
+    public String pronadji_ip_adresu() {
+        String lokacija_a = "109.198.0.4";
+        String lokacija_b = "79.175.112.244";
+        // String lokacija_c = "109.111.239.54";
+        String lokacija_d = "79.175.112.161";
+
+        String ip_adresa = "";
+
+        String mreza = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mreza = isURLReachableA(lokacija_a);
+        }
+        if (mreza == "false") {
+            mreza = isURLReachableB(lokacija_b);
+            if (mreza == "false") {
+                mreza = isURLReachableD(lokacija_d);
+                if (mreza == "false") {
+                    ip_adresa = parsiraj_ip_adresu();
+                } else {
+                    ip_adresa = parsiraj_adresu(mreza);
+                }
+            } else {
+                ip_adresa = parsiraj_adresu(mreza);
+            }
+        } else {
+            ip_adresa = parsiraj_adresu(mreza);
+        }
+        return ip_adresa;
+    }
+
+    //******************************TRAZENJE VALIDNE IP ADRESE END***************//
+    //***********************************IkeV2 IPSEC*****************************//
+    public boolean vpn() {
+        String iface = "";
+        try {
+            for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+                if (networkInterface.isUp())
+                    iface = networkInterface.getName();
+                Log.d("DEBUG", "IFACE NAME: " + iface);
+                if (iface.contains("tun") || iface.contains("ppp") || iface.contains("pptp") || iface.contains("ipsec")) {
+                    return true;
+                }
+            }
+        } catch (SocketException e1) {
+            e1.printStackTrace();
+        }
+        return false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public eccikev2vpn connect_vpn(Boolean vpn_connected, Context context, VpnManager vpnManager, eccikev2vpn vpn) throws IOException {
+        // eccikev2vpn vpn = new eccikev2vpn();
+        if (vpn_connected == false) {
+            String radna_ip_adresa = pronadji_ip_adresu();
+
+            vpn.adresa_servera = radna_ip_adresa;
+            vpn.createVpnBuilder();
+            vpnmng = vpn.onStartvpn(vpnManager, context);
+
+            if (vpnmng != null) {
+                startActivityForResult(vpnmng, VPN_CON);
+            }
+        }
+        return vpn;
+        //SystemClock.sleep(1000);
+    }
+
+    public void connecting_profile(VpnManager vpn_mng) {
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                vpn_mng.startProvisionedVpnProfile(); //ovde se konektuje profil
+            }
+        });
+        thread.start();
+    }
+
+    public void konektuj(Context context, Boolean vpn_connected) {
+        VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
+        if (vpn_connected == false) {
+            eccikev2vpn ikev2 = new eccikev2vpn();
+            try {
+                ikev2 = connect_vpn(vpn_connected, context, vpnManager, ikev2);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (vpnmng != null) {
+                do {
+                    vpnmng = ikev2.onStartvpn(vpnManager, context);
+                } while (vpnmng != null);
+            }
+
+            try {
+                connecting_profile(vpnManager);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+
+            do {
+                vpn_connected = vpn();
+                SystemClock.sleep(1000);
+            } while (vpn_connected == false);
+            Log.i(TAG, "konektovanje..*.*.*.*.*.*.");
+        }
+    }
+
+    //***********************************IkeV2 IPSEC END******************************//
+    public static ConversationsActivity getInstance() {
+        return instance;
     }
 
     @Override
@@ -640,12 +1029,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             if (conversation != null) {
                 actionBar.setTitle(conversation.getName());
             } else {
-               // actionBar.setTitle(R.string.app_name);
+                // actionBar.setTitle(R.string.app_name);
                 actionBar.setTitle("Chats");
             }
         } else {
 //           actionBar.setTitle(R.string.app_name);
-           actionBar.setTitle("Chats");
+            actionBar.setTitle("Chats");
         }
         actionBar.setDisplayHomeAsUpEnabled(false);
         ToolbarUtils.resetActionBarOnClickListeners(binding.toolbar);
@@ -740,5 +1129,36 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     @Override
     public void onShowErrorToast(int resId) {
         runOnUiThread(() -> Toast.makeText(this, resId, Toast.LENGTH_SHORT).show());
+    }
+
+    private void showPinDialog() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String pinCode = prefs.getString("pin_code", "1111");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter PIN Code");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String enteredPin = input.getText().toString();
+            if (enteredPin.equals(pinCode)) {
+                // PIN is correct
+                Toast.makeText(this, "Access granted", Toast.LENGTH_SHORT).show();
+            } else {
+                // PIN is incorrect
+                Toast.makeText(this, "Invalid PIN", Toast.LENGTH_SHORT).show();
+                finish(); // Close the app if the PIN is incorrect
+            }
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.cancel();
+            finish(); // Close the app if cancelled
+        });
+
+        builder.show();
     }
 }

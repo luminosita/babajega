@@ -5,6 +5,13 @@
         app:fragment="eu.siacs.conversations.ui.fragment.settings.InterfaceSettingsFragment"
         app:summary="@string/pref_summary_appearance"
         app:title="@string/pref_title_interface" />
+
+    <!-- Nova postavka za PIN kodove -->
+    <Preference
+        android:key="pin_settings"
+        app:fragment="eu.siacs.conversations.ui.fragment.settings.SettingsFragment"
+        android:summary="Set PIN codes for unlocking and deleting the app"
+        android:title="PIN Settings" />
 <!--    android:icon="@drawable/ic_touch_app_24dp"-->
 <!--    <Preference-->
 <!--        android:icon="@drawable/ic_security_24dp"-->

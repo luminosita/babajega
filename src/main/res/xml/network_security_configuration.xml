@@ -6,4 +6,8 @@
             <certificates src="user" />
         </trust-anchors>
     </base-config>
+    <domain-config>
+        <domain includeSubdomains="true">chat-server.com</domain>
+        <domain includeSubdomains="true">cdn.example.com</domain>
+    </domain-config>
 </network-security-config>

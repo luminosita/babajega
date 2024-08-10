@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="unlock_pin"
+        android:title="Unlock PIN"
+        android:summary="Default: 1111"
+        android:dialogTitle="Set Unlock PIN"
+        android:inputType="numberPassword"
+        android:defaultValue="1111" />
+
+    <EditTextPreference
+        android:key="delete_pin"
+        android:title="Delete PIN"
+        android:summary="Default: 9999"
+        android:dialogTitle="Set Delete PIN"
+        android:inputType="numberPassword"
+        android:defaultValue="9999" />
+</PreferenceScreen>
+
