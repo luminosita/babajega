@@ -1378,35 +1378,30 @@ public class EditAccountActivity extends OmemoActivity
             }
             boolean hasKeys = false;
             boolean showUnverifiedWarning = false;
-            binding.otherDeviceKeys.removeAllViews();
-            for (final XmppAxolotlSession session :
-                    mAccount.getAxolotlService().findOwnSessions()) {
+//            binding.otherDeviceKeys.removeAllViews();
+            for (final XmppAxolotlSession session : mAccount.getAxolotlService().findOwnSessions()) {
                 final FingerprintStatus trust = session.getTrust();
                 if (!trust.isCompromised()) {
                     boolean highlight = session.getFingerprint().equals(messageFingerprint);
-                    addFingerprintRow(binding.otherDeviceKeys, session, highlight);
+//                    addFingerprintRow(binding.otherDeviceKeys, session, highlight);
                     hasKeys = true;
                 }
                 if (trust.isUnverified()) {
                     showUnverifiedWarning = true;
                 }
             }
-            if (hasKeys
-                    && Config.supportOmemo()) { // TODO: either the button should be visible if we
-                // print an active device or the device list should
-                // be fed with reactived devices
-                this.binding.otherDeviceKeysCard.setVisibility(View.VISIBLE);
+            if (hasKeys && Config.supportOmemo()) { //TODO: either the button should be visible if we print an active device or the device list should be fed with reactived devices
+//                this.binding.otherDeviceKeysCard.setVisibility(View.VISIBLE);
                 Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
                 if (otherDevices == null || otherDevices.isEmpty()) {
-                    binding.clearDevices.setVisibility(View.GONE);
+//                    binding.clearDevices.setVisibility(View.GONE);
                 } else {
-                    binding.clearDevices.setVisibility(View.VISIBLE);
+//                    binding.clearDevices.setVisibility(View.VISIBLE);
                 }
-                binding.unverifiedWarning.setVisibility(
-                        showUnverifiedWarning ? View.VISIBLE : View.GONE);
-                binding.scanButton.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
+//                binding.unverifiedWarning.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
+       //         binding.scanButton.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
             } else {
-                this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
+//                this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
             }
         } else {
             final TextInputLayout errorLayout;
@@ -1430,7 +1425,7 @@ public class EditAccountActivity extends OmemoActivity
             }
             removeErrorsOnAllBut(errorLayout);
             this.binding.stats.setVisibility(View.GONE);
-            this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
+//            this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
         }
     }
 

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import eu.siacs.conversations.ui.util.SettingsUtils;
 
 public class ConversationActivity extends AppCompatActivity {
-
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

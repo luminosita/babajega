@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
+
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -13,14 +16,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+
+import com.google.common.base.Strings;
 
 import java.util.Arrays;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.Conversations;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityWelcomeBinding;
 import eu.siacs.conversations.entities.Account;
@@ -29,12 +37,8 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.vpn.VpnConnector;
 import eu.siacs.conversations.xmpp.Jid;
-
-import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
-import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
-
-import com.google.common.base.Strings;
 
 public class WelcomeActivity extends XmppActivity
         implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
@@ -94,6 +98,21 @@ public class WelcomeActivity extends XmppActivity
     public void onStart() {
         super.onStart();
         new InstallReferrerUtils(this);
+
+        VpnConnector vpnConnector = Conversations.getVpnConnectorInstance();
+
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                       vpnConnector.connect(this);
+                    } else {
+                       vpnConnector.reset();
+                    }
+                }
+        );
+
+        vpnConnector.connect(this, intent1 -> launcher.launch(intent1));
     }
 
     @Override

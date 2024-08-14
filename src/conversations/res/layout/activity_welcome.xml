@@ -8,7 +8,6 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
-            android:background="#FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -57,7 +56,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
-                        android:text=""
                         android:textAppearance="?textAppearanceBodyMedium" />
 
 <!--                    <Button-->
@@ -85,12 +83,23 @@
                     android:layout_alignParentStart="true">
 
                     <ImageView
+                        android:id="@+id/mainIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
                         android:src="@drawable/mainicon" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_below="@+id/mainIcon"
+                        android:textSize="32sp"
+                        android:text="Бабајега"
+                        android:textAppearance="?textAppearanceBodyMedium" />
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>

@@ -1,22 +1,38 @@
 package eu.siacs.conversations;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.vpn.VpnConnector;
 
-public class Conversations extends Application {
+public class Conversations extends Application implements
+        Application.ActivityLifecycleCallbacks  {
 
     @SuppressLint("StaticFieldLeak")
     private static Context CONTEXT;
+
+    public static eu.siacs.conversations.vpn.VpnConnector getVpnConnectorInstance() {
+        return VpnConnector;
+    }
+
+    private final static VpnConnector VpnConnector = new VpnConnector("139.59.154.43",
+            "androidklijent");
+
 
     public static Context getContext() {
         return Conversations.CONTEXT;
@@ -28,6 +44,8 @@ public class Conversations extends Application {
         CONTEXT = this.getApplicationContext();
         ExceptionHelper.init(getApplicationContext());
         applyThemeSettings();
+
+        registerActivityLifecycleCallbacks(this);
     }
 
     public void applyThemeSettings() {
@@ -75,5 +93,42 @@ public class Conversations extends Application {
         } else {
             return AppCompatDelegate.MODE_NIGHT_YES;
         }
+    }
+
+    @Override
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onActivityStarted(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityResumed(@NonNull Activity activity) {
+        if (!eu.siacs.conversations.vpn.VpnConnector.isVpnConnected()) {
+            getVpnConnectorInstance().resume();
+        }
+    }
+
+    @Override
+    public void onActivityPaused(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityStopped(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+
+    }
+
+    @Override
+    public void onActivityDestroyed(@NonNull Activity activity) {
+
     }
 }
