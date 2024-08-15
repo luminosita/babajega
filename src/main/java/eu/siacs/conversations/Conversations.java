@@ -31,7 +31,7 @@ public class Conversations extends Application implements
     }
 
     private final static VpnConnector VpnConnector = new VpnConnector("139.59.154.43",
-            "androidklijent");
+            BuildConfig.SHARED_PSK, BuildConfig.DEFAULT_FIREWALL_PORTS.split(","));
 
 
     public static Context getContext() {

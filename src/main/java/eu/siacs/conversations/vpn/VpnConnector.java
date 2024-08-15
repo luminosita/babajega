@@ -30,13 +30,13 @@ public class VpnConnector {
         void launch(Intent intent);
     }
 
-    private static final String[] DEFAULT_PORTS = { "17441", "45781", "26884" };
-
     private static final String TAG = VpnConnector.class.getName();
 
     public static boolean isVpnConnected() {
         String iface = "";
         List<InterfaceAddress> ipAddrs = null;
+
+        boolean connected = false;
 
         try {
             for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
@@ -54,27 +54,23 @@ public class VpnConnector {
                         }
                     }
 
-                    return true;
+                    connected = true;
                 }
             }
         } catch (SocketException e1) {
             e1.printStackTrace();
         }
 
-        return false;
+        return connected;
     }
 
     private VpnManager _vpnManager;
 
     private Ikev2VpnProfile _profile;
 
-    private String _domain;
-    private String _sharedPsk;
-    private String[] _ports;
-
-    public VpnConnector(String domain, String sPsk) {
-        this(domain, sPsk, DEFAULT_PORTS);
-    }
+    private final String _domain;
+    private final String _sharedPsk;
+    private final String[] _ports;
 
     public VpnConnector(String domain, String sPsk, String[] ports) {
         _domain = domain;
@@ -87,6 +83,8 @@ public class VpnConnector {
     }
 
     public void connect(Context context, IntentCallback callback) {
+//        context.getSharedPreferences();
+
         if (_profile == null) {
             _profile = init(context);
 
@@ -164,7 +162,7 @@ public class VpnConnector {
         try {
             _vpnManager.startProvisionedVpnProfile();
 
-            Log.d(TAG, "Profile connected ");
+            Log.d(TAG, "Profile connecting ...");
 
             while (!isVpnConnected()) {
                 Log.d(TAG, "VPN Interface connecting...");
@@ -188,10 +186,10 @@ public class VpnConnector {
                 processes.add(runtime.exec(ncCommand + port));
                 SystemClock.sleep(10);
             }
-            Process ipProcess4 = runtime.exec(pingCommand);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ipProcess4.getInputStream()));
+            Process pingProcess = runtime.exec(pingCommand);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pingProcess.getInputStream()));
             String inputLine = bufferedReader.readLine();
-            int exitValue = ipProcess4.waitFor();
+            int exitValue = pingProcess.waitFor();
             for (Process process : processes) {
                 if (!process.waitFor(100, TimeUnit.MILLISECONDS)) {
                     process.destroy();
@@ -199,9 +197,7 @@ public class VpnConnector {
             }
 
             return exitValue == 0 ? inputLine : null;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 

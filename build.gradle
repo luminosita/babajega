@@ -113,6 +113,12 @@ android {
         def xmppDomain = "xmpp-server.com"
         resValue "string", "xmpp_domain", xmppDomain
         buildConfigField "String", "XMPP_DOMAIN", "\"$xmppDomain\""
+        def sharedPsk = "androidklijent"
+        resValue "string", "shared_psk", sharedPsk
+        buildConfigField "String", "SHARED_PSK", "\"$sharedPsk\""
+        def defaultFirewallPorts = "17441,45781,26884"
+        resValue "string", "default_firewall_ports", defaultFirewallPorts
+        buildConfigField "String", "DEFAULT_FIREWALL_PORTS", "\"$defaultFirewallPorts\""
     }
 
     splits {

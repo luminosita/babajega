@@ -98,7 +98,8 @@
                         android:layout_centerVertical="true"
                         android:layout_below="@+id/mainIcon"
                         android:textSize="32sp"
-                        android:text="Бабајега"
+                        android:text="Бáба-Ягá"
+                        android:textStyle="bold"
                         android:textAppearance="?textAppearanceBodyMedium" />
                 </RelativeLayout>
             </RelativeLayout>
