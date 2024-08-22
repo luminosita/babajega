@@ -1491,8 +1491,8 @@ public class ConversationFragment extends XmppFragment
             case R.id.attach_choose_file:
             case R.id.attach_record_voice:
 //            case R.id.attach_location:
-//                handleAttachmentSelection(item);
-//                break;
+                handleAttachmentSelection(item);
+                break;
             case R.id.action_search:
                 startSearch();
                 break;
