@@ -51,4 +51,14 @@
 <!--            android:targetClass="eu.siacs.conversations.ui.AboutActivity"-->
 <!--            android:targetPackage="@string/applicationId" />-->
 <!--    </Preference>-->
+
+    <Preference
+        android:key="pin"
+        android:title="Setup Pin">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="eu.siacs.conversations.ui.activity.pin.PinActivity"
+            android:targetPackage="@string/applicationId" />
+    </Preference>
+
 </PreferenceScreen>
