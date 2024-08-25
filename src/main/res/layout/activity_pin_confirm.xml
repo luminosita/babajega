@@ -12,12 +12,28 @@
             android:layout_height="wrap_content"
             app:liftOnScroll="false">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/material_toolbar"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_arrow_back_24dp"
-                app:title="@string/pin_setup" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/material_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="App Lock" />
+                <TextView
+                    android:id="@+id/btnReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="16dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:text="Reset App"
+                    android:textColor="#ffFFA000" />
+
+            </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -25,9 +41,9 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:gravity="center_horizontal"
-            android:text="@string/enter_pin"
+            android:text="Enter 4 digits app unlock pin"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -82,66 +98,6 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/tvResetPin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:gravity="center_horizontal"
-            android:text="@string/set_reset_pin"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/resetpin1"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginHorizontal="12dp"
-                android:background="@drawable/bg_pin_entry"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1" />
-
-            <EditText
-                android:id="@+id/resetpin2"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginHorizontal="12dp"
-                android:background="@drawable/bg_pin_entry"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1" />
-
-            <EditText
-                android:id="@+id/resetpin3"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginHorizontal="12dp"
-                android:background="@drawable/bg_pin_entry"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1" />
-
-            <EditText
-                android:id="@+id/resetpin4"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginHorizontal="12dp"
-                android:background="@drawable/bg_pin_entry"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

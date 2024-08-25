@@ -192,6 +192,14 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.activity.pin.PinConfirmActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.chatserver.ChatServerActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.ConversationActivity"
             android:exported="true"
             android:theme="@style/Theme.Conversations3.SplashScreen">

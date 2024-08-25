@@ -1085,7 +1085,7 @@
     <string name="video_is_disabled_tap_to_enable">Video is disabled. Tap to enable.</string>
     <string name="server_info_login_mechanism">Login mechanism</string>
 
-    <string name="enter_pin">Set app lock password</string>
+    <string name="enter_pin">Set Unlock Pin</string>
     <string name="enter_pin_message">Enter 4 digits.</string>
     <string name="pin_setup">Pin setup</string>
     <string name="confirm_pin">Confirm Pin</string>
@@ -1094,4 +1094,9 @@
     <string name="apply">Apply</string>
     <string name="require_4_digits_app_lock_pin">Require 4 digits app lock pin.</string>
     <string name="require_reset_pin">Require reset pin</string>
+    <string name="set_reset_pin">Set Reset Pin</string>
+    <string name="add_server">Add Server</string>
+    <string name="enter_4_digits_app_reset_pin">Enter 4 digits app reset pin</string>
+    <string name="reset_pin_doesn_t_match">Reset pin doesn\'t match</string>
+    <string name="unlock_pin_doesn_t_match">Unlock pin doesn\'t match</string>
 </resources>

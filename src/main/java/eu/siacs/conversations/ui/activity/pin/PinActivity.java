@@ -12,12 +12,14 @@ import androidx.databinding.DataBindingUtil;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityPinBinding;
+import eu.siacs.conversations.entities.AppSharedPreferences;
+import eu.siacs.conversations.ui.Activities;
 
 public class PinActivity extends AppCompatActivity {
 
     ActivityPinBinding binding;
-    private String firstPin;
-    private boolean isConfirmScreen = false;
+    AppSharedPreferences appSharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +28,11 @@ public class PinActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_pin);
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> finish());
+        setSupportActionBar(binding.materialToolbar);
+        Activities.setStatusAndNavigationBarColors(this, binding.getRoot());
         initPinUi(binding.pin1, binding.pin2, binding.pin3, binding.pin4);
         initPinUi(binding.resetpin1, binding.resetpin2, binding.resetpin3, binding.resetpin4);
+        appSharedPreferences = new AppSharedPreferences(this);
 
         binding.pin1.requestFocus();
         binding.pin1.postDelayed(() -> {
@@ -43,10 +48,18 @@ public class PinActivity extends AppCompatActivity {
             } else if (isEmptyResetPin()) {
                 Toast.makeText(this, R.string.require_reset_pin, Toast.LENGTH_SHORT).show();
             } else {
+                appSharedPreferences.setString(AppSharedPreferences.APP_PIN, fetchPin());
+                appSharedPreferences.setString(AppSharedPreferences.RESET_PIN, fetchResetPin());
                 Toast.makeText(this, getString(R.string.pin_setup_successfully), Toast.LENGTH_SHORT).show();
+
                 finish();
             }
         });
+
+        binding.materialToolbar.setNavigationOnClickListener(
+                view -> {
+                    finish();
+                });
     }
 
     private void initPinUi(EditText pin1, EditText pin2, EditText pin3, EditText pin4) {
@@ -79,7 +92,6 @@ public class PinActivity extends AppCompatActivity {
                     pin3.requestFocus();
                 }
             }
-
             return false;
         });
 
