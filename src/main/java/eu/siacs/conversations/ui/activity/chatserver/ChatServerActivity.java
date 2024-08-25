@@ -61,7 +61,6 @@ public class ChatServerActivity extends AppCompatActivity {
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> {
                     finish();
-                    12
                 });
 
     }
