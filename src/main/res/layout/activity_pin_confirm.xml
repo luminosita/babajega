@@ -22,16 +22,6 @@
                     android:layout_weight="1"
                     android:layout_height="?attr/actionBarSize"
                     app:title="App Lock" />
-                <TextView
-                    android:id="@+id/btnReset"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="16dp"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:text="Reset App"
-                    android:textColor="#ffFFA000" />
 
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>

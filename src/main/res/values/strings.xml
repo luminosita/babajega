@@ -1099,4 +1099,6 @@
     <string name="enter_4_digits_app_reset_pin">Enter 4 digits app reset pin</string>
     <string name="reset_pin_doesn_t_match">Reset pin doesn\'t match</string>
     <string name="unlock_pin_doesn_t_match">Unlock pin doesn\'t match</string>
+    <string name="pin_doesn_t_match">Pin doesn\'t match</string>
+    <string name="app_reset">App reset</string>
 </resources>

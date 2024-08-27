@@ -24,7 +24,6 @@ import eu.siacs.conversations.ui.WelcomeActivity;
 public class PinConfirmActivity extends AppCompatActivity {
     ActivityPinConfirmBinding binding;
     AppSharedPreferences appSharedPreferences;
-    boolean isResetPin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,32 +45,23 @@ public class PinConfirmActivity extends AppCompatActivity {
 
         binding.btnCancel.setOnClickListener(view -> finish());
         binding.btnApply.setOnClickListener(view -> {
-            if (!isResetPin) {
-                String unlockPin = appSharedPreferences.getString(AppSharedPreferences.APP_PIN);
-                if (unlockPin.equals(fetchPin())) {
-                    startActivity(new Intent(this, ConversationsActivity.class));
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.unlock_pin_doesn_t_match, Toast.LENGTH_SHORT).show();
-                }
+            String unlockPin = appSharedPreferences.getString(AppSharedPreferences.APP_PIN);
+            String resetPin = appSharedPreferences.getString(AppSharedPreferences.RESET_PIN);
 
+            if (unlockPin.equals(fetchPin())) {
+                startActivity(new Intent(this, ConversationsActivity.class));
+            } else if (resetPin.equals(fetchPin())) {
+                Intent intent = new Intent(activity, WelcomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                finish();
             } else {
-                String resetPin = appSharedPreferences.getString(AppSharedPreferences.RESET_PIN);
-                if (resetPin.equals(fetchPin())) {
-                    Intent intent = new Intent(activity, WelcomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.reset_pin_doesn_t_match, Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(getApplicationContext(), getString(R.string.pin_doesn_t_match), Toast.LENGTH_SHORT).show();
             }
+
+
         });
 
-        binding.btnReset.setOnClickListener(view -> {
-            isResetPin = true;
-            binding.tvTitle.setText(R.string.enter_4_digits_app_reset_pin);
-            binding.btnReset.setVisibility(View.GONE);
-        });
 
     }
 
