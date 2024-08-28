@@ -104,7 +104,7 @@
                     android:minHeight="32dp"
                     android:minLines="1"
                     android:textColor="@color/black87"
-                    android:textColorHint="@color/hint_on_tertiary_container"
+                    android:textColorHint="@color/black30"
                     android:textCursorDrawable="@drawable/cursor_on_tertiary_container">
 
                     <requestFocus />
@@ -122,8 +122,8 @@
                 android:layout_marginStart="8dp"
                 android:backgroundTint="@color/amber_300"
                 android:contentDescription="@string/send_message"
-                app:icon="@drawable/message_icon"
-                app:iconTint="@color/dark_green"
+                app:icon="@drawable/baseline_send_24"
+                app:iconTint="@color/black87"
                 app:iconSize="32dp" />
         </RelativeLayout>
 

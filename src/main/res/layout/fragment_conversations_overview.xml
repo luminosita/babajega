@@ -22,6 +22,7 @@
             android:backgroundTint="@color/amber_300"
             android:text="@string/start_chat"
             android:textColor="@color/black87"
+            app:iconTint="@color/black87"
             app:icon="@drawable/ic_chat_24dp" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -98,10 +98,11 @@ public class SendButtonTool {
         }
     }
 
-    public @DrawableRes static int getSendButtonImageResource(final SendButtonAction action) {
+    public @DrawableRes
+    static int getSendButtonImageResource(final SendButtonAction action) {
         return switch (action) {
-          //  case TEXT -> R.drawable.ic_send_24dp;
-            case TEXT -> R.drawable.message_icon;
+            //  case TEXT -> R.drawable.ic_send_24dp;
+            case TEXT -> R.drawable.ic_send_24dp;
             case TAKE_PHOTO -> R.drawable.ic_camera_alt_24dp;
             case SEND_LOCATION -> R.drawable.ic_location_pin_24dp;
             case CHOOSE_PICTURE -> R.drawable.ic_image_24dp;
@@ -111,11 +112,13 @@ public class SendButtonTool {
         };
     }
 
-    public @ColorInt static int getSendButtonColor(final View view, final Presence.Status status) {
+    public @ColorInt
+    static int getSendButtonColor(final View view, final Presence.Status status) {
         final boolean nightMode = Activities.isNightMode(view.getContext());
         return switch (status) {
-            case OFFLINE -> MaterialColors.getColor(
-                    view, com.google.android.material.R.attr.colorOnSurface);
+            case OFFLINE ->
+                    nightMode ? ContextCompat.getColor(view.getContext(), R.color.black87) : MaterialColors.getColor(
+                            view, com.google.android.material.R.attr.colorOnSurface);
             case ONLINE, CHAT -> MaterialColors.harmonizeWithPrimary(
                     view.getContext(),
                     ContextCompat.getColor(
