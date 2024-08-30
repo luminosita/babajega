@@ -51,6 +51,7 @@ import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.databinding.ActivityEditAccountBinding;
 import eu.siacs.conversations.databinding.DialogPresenceBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.AppSharedPreferences;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.services.BarcodeProvider;
@@ -91,12 +92,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class EditAccountActivity extends OmemoActivity
         implements OnAccountUpdate,
-                OnUpdateBlocklist,
-                OnKeyStatusUpdated,
-                OnCaptchaRequested,
-                KeyChainAliasCallback,
-                XmppConnectionService.OnShowErrorToast,
-                XmppConnectionService.OnMamPreferencesFetched {
+        OnUpdateBlocklist,
+        OnKeyStatusUpdated,
+        OnCaptchaRequested,
+        KeyChainAliasCallback,
+        XmppConnectionService.OnShowErrorToast,
+        XmppConnectionService.OnMamPreferencesFetched {
 
     public static final String EXTRA_OPENED_FROM_NOTIFICATION = "opened_from_notification";
     public static final String EXTRA_FORCE_REGISTER = "force_register";
@@ -173,7 +174,7 @@ public class EditAccountActivity extends OmemoActivity
                     }
                     if (mAccount != null
                             && Arrays.asList(Account.State.DISABLED, Account.State.LOGGED_OUT)
-                                    .contains(mAccount.getStatus())
+                            .contains(mAccount.getStatus())
                             && !accountInfoEdited) {
                         mAccount.setOption(Account.OPTION_SOFT_DISABLED, false);
                         mAccount.setOption(Account.OPTION_DISABLED, false);
@@ -357,6 +358,9 @@ public class EditAccountActivity extends OmemoActivity
                     }
                     binding.hostnameLayout.setError(null);
                     binding.portLayout.setError(null);
+                    AppSharedPreferences appSharedPreferences = new AppSharedPreferences(binding.getRoot().getContext());
+                    appSharedPreferences.clearData();
+
                     if (mAccount.isOnion()) {
                         Toast.makeText(
                                         EditAccountActivity.this,
@@ -384,10 +388,12 @@ public class EditAccountActivity extends OmemoActivity
 
                 @Override
                 public void beforeTextChanged(
-                        final CharSequence s, final int start, final int count, final int after) {}
+                        final CharSequence s, final int start, final int count, final int after) {
+                }
 
                 @Override
-                public void afterTextChanged(final Editable s) {}
+                public void afterTextChanged(final Editable s) {
+                }
             };
     private final View.OnFocusChangeListener mEditTextFocusListener =
             new View.OnFocusChangeListener() {
@@ -616,8 +622,8 @@ public class EditAccountActivity extends OmemoActivity
             this.binding.saveButton.setEnabled(true);
         } else if (mAccount != null
                 && (mAccount.getStatus() == Account.State.CONNECTING
-                        || mAccount.getStatus() == Account.State.REGISTRATION_SUCCESSFUL
-                        || mFetchingAvatar)) {
+                || mAccount.getStatus() == Account.State.REGISTRATION_SUCCESSFUL
+                || mFetchingAvatar)) {
             this.binding.saveButton.setEnabled(false);
             this.binding.saveButton.setText(R.string.account_status_connecting);
         } else if (mAccount != null
@@ -644,8 +650,8 @@ public class EditAccountActivity extends OmemoActivity
                             mAccount == null ? null : mAccount.getXmppConnection();
                     HttpUrl url =
                             connection != null
-                                            && mAccount.getStatus()
-                                                    == Account.State.PAYMENT_REQUIRED
+                                    && mAccount.getStatus()
+                                    == Account.State.PAYMENT_REQUIRED
                                     ? connection.getRedirectionUrl()
                                     : null;
                     if (url != null) {
@@ -689,11 +695,11 @@ public class EditAccountActivity extends OmemoActivity
         }
         return jidEdited()
                 || !this.mAccount
-                        .getPassword()
-                        .equals(this.binding.accountPassword.getText().toString())
+                .getPassword()
+                .equals(this.binding.accountPassword.getText().toString())
                 || !this.mAccount.getHostname().equals(this.binding.hostname.getText().toString())
                 || !String.valueOf(this.mAccount.getPort())
-                        .equals(this.binding.port.getText().toString());
+                .equals(this.binding.port.getText().toString());
     }
 
     protected boolean jidEdited() {
@@ -732,7 +738,7 @@ public class EditAccountActivity extends OmemoActivity
         this.binding.avater.setOnClickListener(this.mAvatarClickListener);
         this.binding.hostname.addTextChangedListener(mTextWatcher);
         this.binding.hostname.setOnFocusChangeListener(mEditTextFocusListener);
-       // this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
+        // this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
         this.binding.port.setText(String.valueOf(Resolver.DEFAULT_PORT_XMPP));
         this.binding.port.addTextChangedListener(mTextWatcher);
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
@@ -747,7 +753,7 @@ public class EditAccountActivity extends OmemoActivity
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
         this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
-    //    this.binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
+        //    this.binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
     }
 
     private void onEditYourNameClicked(View view) {
@@ -774,13 +780,13 @@ public class EditAccountActivity extends OmemoActivity
     public boolean onCreateOptionsMenu(final Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.editaccount, menu);
-     //   final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
-   //     final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
+        //   final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
+        //     final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
         final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
         final MenuItem deleteAccount = menu.findItem(R.id.action_delete_account);
         final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
- //       final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
-    //    final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
+        //       final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
+        //    final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
         final MenuItem share = menu.findItem(R.id.action_share);
         renewCertificate.setVisible(mAccount != null && mAccount.getPrivateKeyAlias() != null);
 
@@ -788,21 +794,21 @@ public class EditAccountActivity extends OmemoActivity
 
         if (mAccount != null && mAccount.isOnlineAndConnected()) {
             if (!mAccount.getXmppConnection().getFeatures().blocking()) {
-            //    showBlocklist.setVisible(false);
+                //    showBlocklist.setVisible(false);
             }
 
             if (!mAccount.getXmppConnection().getFeatures().register()) {
                 changePassword.setVisible(false);
                 deleteAccount.setVisible(false);
             }
-    //        mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
-         //   changePresence.setVisible(!mInitMode);
+            //        mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
+            //   changePresence.setVisible(!mInitMode);
         } else {
 //            showBlocklist.setVisible(false);
 //            showMoreInfo.setVisible(false);
             changePassword.setVisible(false);
             deleteAccount.setVisible(false);
-      //      mamPrefs.setVisible(false);
+            //      mamPrefs.setVisible(false);
             //changePresence.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
@@ -876,13 +882,13 @@ public class EditAccountActivity extends OmemoActivity
         mUseTor =
                 QuickConversationsService.isConversations()
                         && preferences.getBoolean(
-                                "use_tor", getResources().getBoolean(R.bool.use_tor));
+                        "use_tor", getResources().getBoolean(R.bool.use_tor));
         this.mShowOptions =
                 mUseTor
                         || (QuickConversationsService.isConversations()
-                                && preferences.getBoolean(
-                                        "show_connection_options",
-                                        getResources().getBoolean(R.bool.show_connection_options)));
+                        && preferences.getBoolean(
+                        "show_connection_options",
+                        getResources().getBoolean(R.bool.show_connection_options)));
         this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
         if (mForceRegister != null) {
             this.binding.accountRegisterNew.setVisibility(View.GONE);
@@ -1140,7 +1146,8 @@ public class EditAccountActivity extends OmemoActivity
                             }
 
                             @Override
-                            public void error(int errorCode, String object) {}
+                            public void error(int errorCode, String object) {
+                            }
 
                             @Override
                             public void userInputRequired(PendingIntent pi, String object) {
@@ -1245,7 +1252,7 @@ public class EditAccountActivity extends OmemoActivity
         }
         if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
             final Features features = this.mAccount.getXmppConnection().getFeatures();
-         //   this.binding.stats.setVisibility(View.VISIBLE);
+            //   this.binding.stats.setVisibility(View.VISIBLE);
             this.binding.stats.setVisibility(View.GONE);
             boolean showBatteryWarning = isOptimizingBattery();
             boolean showDataSaverWarning = isAffectedByDataSaver();
@@ -1399,7 +1406,7 @@ public class EditAccountActivity extends OmemoActivity
 //                    binding.clearDevices.setVisibility(View.VISIBLE);
                 }
 //                binding.unverifiedWarning.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
-       //         binding.scanButton.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
+                //         binding.scanButton.setVisibility(showUnverifiedWarning ? View.VISIBLE : View.GONE);
             } else {
 //                this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
             }

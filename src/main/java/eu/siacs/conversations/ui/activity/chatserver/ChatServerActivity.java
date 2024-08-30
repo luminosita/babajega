@@ -53,7 +53,11 @@ public class ChatServerActivity extends AppCompatActivity {
         });
 
         List<String> list = new ArrayList<>();
-        if (getServerList() != null) {
+        if (getServerList()==null || getServerList().isEmpty()) {
+            list.add("139.59.154.43");
+            setList(list);
+            serverAdapter.updateList(list);
+        } else {
             list.addAll(getServerList());
             serverAdapter.updateList(list);
         }

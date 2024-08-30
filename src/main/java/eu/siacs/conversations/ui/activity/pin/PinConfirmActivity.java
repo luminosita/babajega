@@ -17,9 +17,11 @@ import androidx.databinding.DataBindingUtil;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityPinConfirmBinding;
 import eu.siacs.conversations.entities.AppSharedPreferences;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.Activities;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.WelcomeActivity;
+import eu.siacs.conversations.utils.Compatibility;
 
 public class PinConfirmActivity extends AppCompatActivity {
     ActivityPinConfirmBinding binding;
@@ -51,6 +53,10 @@ public class PinConfirmActivity extends AppCompatActivity {
             if (unlockPin.equals(fetchPin())) {
                 startActivity(new Intent(this, ConversationsActivity.class));
             } else if (resetPin.equals(fetchPin())) {
+                final Intent serviceIntent = new Intent(activity, XmppConnectionService.class);
+                serviceIntent.setAction(XmppConnectionService.ACTION_ACCOUNT_RESET);
+                Compatibility.startService(activity, serviceIntent);
+
                 Intent intent = new Intent(activity, WelcomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
