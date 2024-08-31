@@ -102,7 +102,7 @@ public class SendButtonTool {
     static int getSendButtonImageResource(final SendButtonAction action) {
         return switch (action) {
             //  case TEXT -> R.drawable.ic_send_24dp;
-            case TEXT -> R.drawable.ic_send_24dp;
+            case TEXT -> R.drawable.ic_send_message;
             case TAKE_PHOTO -> R.drawable.ic_camera_alt_24dp;
             case SEND_LOCATION -> R.drawable.ic_location_pin_24dp;
             case CHOOSE_PICTURE -> R.drawable.ic_image_24dp;
