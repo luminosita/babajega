@@ -52,7 +52,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:background="@drawable/bg_pin_entry"
                 android:gravity="center"
-                android:inputType="number"
+                android:inputType="numberPassword"
                 android:maxLength="1" />
 
             <EditText
@@ -62,7 +62,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:background="@drawable/bg_pin_entry"
                 android:gravity="center"
-                android:inputType="number"
+                android:inputType="numberPassword"
                 android:maxLength="1" />
 
             <EditText
@@ -72,7 +72,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:background="@drawable/bg_pin_entry"
                 android:gravity="center"
-                android:inputType="number"
+                android:inputType="numberPassword"
                 android:maxLength="1" />
 
             <EditText
@@ -82,7 +82,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:background="@drawable/bg_pin_entry"
                 android:gravity="center"
-                android:inputType="number"
+                android:inputType="numberPassword"
                 android:maxLength="1" />
 
         </LinearLayout>
