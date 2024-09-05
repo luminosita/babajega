@@ -67,6 +67,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -128,24 +139,11 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
-import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
-
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConversationFragment extends XmppFragment
         implements EditMessage.KeyboardListener,
-                MessageAdapter.OnContactPictureLongClicked,
-                MessageAdapter.OnContactPictureClicked {
+        MessageAdapter.OnContactPictureLongClicked,
+        MessageAdapter.OnContactPictureClicked {
 
     public static final int REQUEST_SEND_MESSAGE = 0x0201;
     public static final int REQUEST_DECRYPT_PGP = 0x0202;
@@ -298,9 +296,9 @@ public class ConversationFragment extends XmppFragment
                                                             Message message = null;
                                                             int childPos;
                                                             for (childPos = 0;
-                                                                    childPos + oldPosition
-                                                                            < messageList.size();
-                                                                    ++childPos) {
+                                                                 childPos + oldPosition
+                                                                         < messageList.size();
+                                                                 ++childPos) {
                                                                 message =
                                                                         messageList.get(
                                                                                 oldPosition
@@ -747,7 +745,8 @@ public class ConversationFragment extends XmppFragment
                 new UiCallback<Message>() {
 
                     @Override
-                    public void success(Message message) {}
+                    public void success(Message message) {
+                    }
 
                     @Override
                     public void error(int errorCode, Message object) {
@@ -755,7 +754,8 @@ public class ConversationFragment extends XmppFragment
                     }
 
                     @Override
-                    public void userInputRequired(PendingIntent pi, Message object) {}
+                    public void userInputRequired(PendingIntent pi, Message object) {
+                    }
                 });
     }
 
@@ -1031,7 +1031,7 @@ public class ConversationFragment extends XmppFragment
         final List<Attachment> attachments = mediaPreviewAdapter.getAttachments();
         if (anyNeedsExternalStoragePermission(attachments)
                 && !hasPermissions(
-                        REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
         if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_ATTACHMENTS)) {
@@ -1064,8 +1064,8 @@ public class ConversationFragment extends XmppFragment
                 || conversation.getMode() == Conversation.MODE_MULTI
                 || Attachment.canBeSendInBand(attachments)
                 || (conversation.getAccount().httpUploadAvailable()
-                        && FileBackend.allFilesUnderSize(
-                                getActivity(), attachments, getMaxHttpUploadSize(conversation)))) {
+                && FileBackend.allFilesUnderSize(
+                getActivity(), attachments, getMaxHttpUploadSize(conversation)))) {
             callback.onPresenceSelected();
         } else {
             activity.selectPresence(conversation, callback);
@@ -1197,7 +1197,7 @@ public class ConversationFragment extends XmppFragment
 //                menuUnmute.setVisible(false);
 //            }
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu);
-         //   ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
+            //   ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
 //            if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
 //                menuTogglePinned.setTitle(R.string.remove_from_favorites);
 //            } else {
@@ -1218,7 +1218,7 @@ public class ConversationFragment extends XmppFragment
                 new StylingHelper.MessageEditorStyler(binding.textinput));
 
         binding.textinput.setOnEditorActionListener(mEditorActionListener);
-        binding.textinput.setRichContentListener(new String[] {"image/*"}, mEditorContentListener);
+        binding.textinput.setRichContentListener(new String[]{"image/*"}, mEditorContentListener);
 
         binding.textSendButton.setOnClickListener(this.mSendButtonListener);
 
@@ -1297,7 +1297,7 @@ public class ConversationFragment extends XmppFragment
             if (m.getStatus() == Message.STATUS_RECEIVED
                     && t != null
                     && (t.getStatus() == Transferable.STATUS_CANCELLED
-                            || t.getStatus() == Transferable.STATUS_FAILED)) {
+                    || t.getStatus() == Transferable.STATUS_FAILED)) {
                 return;
             }
 
@@ -1308,7 +1308,7 @@ public class ConversationFragment extends XmppFragment
             final boolean receiving =
                     m.getStatus() == Message.STATUS_RECEIVED
                             && (t instanceof JingleFileTransferConnection
-                                    || t instanceof HttpDownloadConnection);
+                            || t instanceof HttpDownloadConnection);
             activity.getMenuInflater().inflate(R.menu.message_context, menu);
             menu.setHeaderTitle(R.string.message_options);
             final MenuItem reportAndBlock = menu.findItem(R.id.action_report_and_block);
@@ -1369,8 +1369,8 @@ public class ConversationFragment extends XmppFragment
             }
             if ((m.isFileOrImage() && !deleted && !receiving)
                     || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())
-                            && !unInitiatedButKnownSize
-                            && t == null) {
+                    && !unInitiatedButKnownSize
+                    && t == null) {
                 shareWith.setVisible(true);
             }
             if (m.getStatus() == Message.STATUS_SEND_FAILED) {
@@ -1661,7 +1661,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void triggerRtpSession(final Account account, final Jid with, final String action) {
-        CallIntegrationConnectionService.placeCall(activity.xmppConnectionService, account,with,RtpSessionActivity.actionToMedia(action));
+        CallIntegrationConnectionService.placeCall(activity.xmppConnectionService, account, with, RtpSessionActivity.actionToMedia(action));
     }
 
     private void handleAttachmentSelection(MenuItem item) {
@@ -2192,8 +2192,8 @@ public class ConversationFragment extends XmppFragment
                         && xmppConnection != null
                         && conversation.getMode() == Conversational.MODE_SINGLE
                         && !xmppConnection
-                                .getFeatures()
-                                .httpUpload(message.getFileParams().getSize())) {
+                        .getFeatures()
+                        .httpUpload(message.getFileParams().getSize())) {
                     activity.selectPresence(
                             conversation,
                             () -> {
@@ -2644,8 +2644,8 @@ public class ConversationFragment extends XmppFragment
         final boolean showReject =
                 !conversation.isWithStranger()
                         && conversation
-                                .getContact()
-                                .getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
+                        .getContact()
+                        .getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
         PopupMenu popupMenu = new PopupMenu(getActivity(), view);
         popupMenu.inflate(R.menu.block);
         popupMenu.getMenu().findItem(R.id.block_contact).setVisible(jid.getLocal() != null);
@@ -2690,7 +2690,7 @@ public class ConversationFragment extends XmppFragment
                     R.string.enable,
                     this.mEnableAccountListener);
         } else if (account.getStatus() == Account.State.LOGGED_OUT) {
-            showSnackbar(R.string.this_account_is_logged_out,R.string.log_in,this.mEnableAccountListener);
+            showSnackbar(R.string.this_account_is_logged_out, R.string.log_in, this.mEnableAccountListener);
         } else if (conversation.isBlocked()) {
             showSnackbar(R.string.contact_blocked, R.string.unblock, this.mUnblockClickListener);
         } else if (contact != null
@@ -2923,7 +2923,12 @@ public class ConversationFragment extends XmppFragment
         }
         this.binding.textSendButton.setTag(action);
         this.binding.textSendButton.setIconResource(SendButtonTool.getSendButtonImageResource(action));
-        this.binding.textSendButton.setIconTint(ColorStateList.valueOf(SendButtonTool.getSendButtonColor(this.binding.textSendButton, status)));
+
+        if (action == SendButtonAction.TEXT) {
+            this.binding.textSendButton.setIconTint(null);
+        } else {
+            this.binding.textSendButton.setIconTint(ColorStateList.valueOf(SendButtonTool.getSendButtonColor(this.binding.textSendButton, status)));
+        }
         // TODO send button colo
         final Activity activity = getActivity();
         if (activity != null) {
@@ -2990,7 +2995,7 @@ public class ConversationFragment extends XmppFragment
                         if (!ReadByMarker.contains(marker, addedMarkers)) {
                             addedMarkers.add(
                                     marker); // may be put outside this condition. set should do
-                                             // dedup anyway
+                            // dedup anyway
                             MucOptions.User user = mucOptions.findUser(marker);
                             if (user != null && !users.contains(user)) {
                                 shownMarkers.add(user);
@@ -3083,10 +3088,10 @@ public class ConversationFragment extends XmppFragment
                 activity.xmppConnectionService.getMessageArchiveService();
         return mam
                 && (c.getLastClearHistory().getTimestamp() != 0
-                        || (c.countMessages() == 0
-                                && c.messagesLoaded.get()
-                                && c.hasMessagesLeftOnServer()
-                                && !service.queryInProgress(c)));
+                || (c.countMessages() == 0
+                && c.messagesLoaded.get()
+                && c.hasMessagesLeftOnServer()
+                && !service.queryInProgress(c)));
     }
 
     private boolean hasMamSupport(final Conversation c) {
@@ -3240,7 +3245,7 @@ public class ConversationFragment extends XmppFragment
                                                                     getActivity(),
                                                                     error == 0
                                                                             ? R.string
-                                                                                    .unable_to_connect_to_keychain
+                                                                            .unable_to_connect_to_keychain
                                                                             : error,
                                                                     Toast.LENGTH_SHORT)
                                                             .show();
@@ -3538,9 +3543,9 @@ public class ConversationFragment extends XmppFragment
                                     activity.showQrCode(
                                             "xmpp:"
                                                     + message.getContact()
-                                                            .getJid()
-                                                            .asBareJid()
-                                                            .toEscapedString());
+                                                    .getJid()
+                                                    .asBareJid()
+                                                    .toEscapedString());
                                     break;
                             }
                             return true;
@@ -3596,11 +3601,11 @@ public class ConversationFragment extends XmppFragment
                             ((Conversation) message.getConversation()).getMucOptions();
                     if (mucOptions.participating()
                             || ((Conversation) message.getConversation()).getNextCounterpart()
-                                    != null) {
+                            != null) {
                         if (!mucOptions.isUserInRoom(user)
                                 && mucOptions.findUserByRealJid(
-                                                tcp == null ? null : tcp.asBareJid())
-                                        == null) {
+                                tcp == null ? null : tcp.asBareJid())
+                                == null) {
                             Toast.makeText(
                                             getActivity(),
                                             activity.getString(
